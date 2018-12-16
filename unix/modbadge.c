@@ -126,29 +126,6 @@ STATIC mp_obj_t badge_leds_disable_() {
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_0(badge_leds_disable_obj, badge_leds_disable_);
 
-
-STATIC mp_obj_t badge_leds_set_state_(mp_uint_t n_args, const mp_obj_t *args) {
-  /*
-  mp_uint_t len;
-  uint8_t *leds = (uint8_t *)mp_obj_str_get_data(args[0], &len);
-  return mp_obj_new_int(badge_leds_set_state(leds));
-  */
-  mp_uint_t len;
-  uint8_t *rgbw = (uint8_t *)mp_obj_str_get_data(args[0], &len);
-  printf("LEDs: ");
-  for (int i=5; i>=0; i--) {
-      uint8_t r = rgbw[i*4+0];
-      uint8_t g = rgbw[i*4+1];
-      uint8_t b = rgbw[i*4+2];
-      printf("\x1b[48;2;%u;%u;%um", r, g, b);
-      printf("\x1b[38;2;%u;%u;%um", r, g, b);
-      printf(" \x1b[0m ");
-  }
-  printf("\n");
-  return mp_obj_new_int(0);
-}
-STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(badge_leds_set_state_obj, 1,1 ,badge_leds_set_state_);
-
 STATIC mp_obj_t badge_leds_send_data_(mp_uint_t n_args, const mp_obj_t *args) {
   // mp_uint_t len = mp_obj_get_int(args[1]);
   // uint8_t *leds = (uint8_t *)mp_obj_str_get_data(args[0], &len);
@@ -209,7 +186,6 @@ STATIC const mp_rom_map_elem_t mock_badge_module_globals_table[] = {
   {MP_OBJ_NEW_QSTR(MP_QSTR_leds_enable), (mp_obj_t)&badge_leds_enable_obj},
   {MP_OBJ_NEW_QSTR(MP_QSTR_leds_disable), (mp_obj_t)&badge_leds_disable_obj},
   {MP_OBJ_NEW_QSTR(MP_QSTR_leds_send_data), (mp_obj_t)&badge_leds_send_data_obj},
-  {MP_OBJ_NEW_QSTR(MP_QSTR_leds_set_state), (mp_obj_t)&badge_leds_set_state_obj},
 
   {MP_OBJ_NEW_QSTR(MP_QSTR_vibrator_init), (mp_obj_t)&badge_vibrator_init_obj},
   {MP_OBJ_NEW_QSTR(MP_QSTR_vibrator_activate), (mp_obj_t)&badge_vibrator_activate_obj},
