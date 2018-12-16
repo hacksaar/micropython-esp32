@@ -35,6 +35,9 @@
 #include "py/mphal.h"
 #include "py/runtime.h"
 
+// LED hook
+void gdisp_leds_send_data(uint8_t *data, uint64_t len);
+
 // INIT
 
 STATIC mp_obj_t badge_init_() {
@@ -132,16 +135,7 @@ STATIC mp_obj_t badge_leds_send_data_(mp_uint_t n_args, const mp_obj_t *args) {
   // return mp_obj_new_int(badge_leds_send_data(leds, len));
   mp_uint_t len = mp_obj_get_int(args[1]);
   uint8_t *rgbw = (uint8_t *)mp_obj_str_get_data(args[0], &len);
-  printf("LEDs: ");
-  for (int i=5; i>=0; i--) {
-      uint8_t r = rgbw[i*4+0];
-      uint8_t g = rgbw[i*4+1];
-      uint8_t b = rgbw[i*4+2];
-      printf("\x1b[48;2;%u;%u;%um", r, g, b);
-      printf("\x1b[38;2;%u;%u;%um", r, g, b);
-      printf(" \x1b[0m ");
-  }
-  printf("\n");
+  gdisp_leds_send_data(rgbw, len);
   return mp_obj_new_int(0);
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(badge_leds_send_data_obj, 2,2 ,badge_leds_send_data_);
